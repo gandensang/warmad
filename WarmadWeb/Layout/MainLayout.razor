@@ -1,0 +1,102 @@
+@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_theme" />
+<MudPopoverProvider />
+<MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
+<MudSnackbarProvider />
+
+<MudLayout>
+
+    <MudAppBar Elevation="1" Color="Color.Primary" Dense="false">
+        <MudIconButton Icon="@Icons.Material.Rounded.Menu"
+                       Color="Color.Inherit"
+                       Edge="Edge.Start"
+                       OnClick="ToggleDrawer"
+                       Style="color:#94A3B8" />
+        <MudSpacer />
+        <MudText Typo="Typo.body2" Style="color:#475569; font-size:0.8125rem; font-weight:500; margin-right:8px">
+            @_today
+        </MudText>
+        <MudIconButton Icon="@Icons.Material.Outlined.NotificationsNone"
+                       Color="Color.Inherit"
+                       Style="color:#64748B" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen"
+               Elevation="0"
+               Variant="@DrawerVariant.Responsive"
+               ClipMode="DrawerClipMode.Always">
+
+        <div class="brand-header">
+            <div class="brand-logo">W</div>
+            <div>
+                <div class="brand-name">Warmad</div>
+                <div class="brand-sub">POS System</div>
+            </div>
+        </div>
+
+        <MudDivider Style="margin: 0 16px 8px;" />
+
+        <NavMenu />
+
+    </MudDrawer>
+
+    <MudMainContent Class="warmad-main">
+        <MudContainer MaxWidth="MaxWidth.Large" Class="py-6 px-4">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private string _today = "";
+
+    protected override void OnInitialized()
+    {
+        var hari = new[] { "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" };
+        var bulan = new[] { "", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des" };
+        var now = DateTime.Now;
+        _today = $"{hari[(int)now.DayOfWeek]}, {now.Day} {bulan[now.Month]} {now.Year}";
+    }
+
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+
+    private readonly MudTheme _theme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            Primary               = "#10B981",
+            PrimaryContrastText   = "#FFFFFF",
+            Secondary             = "#F59E0B",
+            SecondaryContrastText = "#1F2937",
+            Background            = "#F1F5F9",
+            Surface               = "#FFFFFF",
+            DrawerBackground      = "#0F172A",
+            DrawerText            = "#CBD5E1",
+            DrawerIcon            = "#64748B",
+            AppbarBackground      = "#0F172A",
+            AppbarText            = "#FFFFFF",
+            TextPrimary           = "#0F172A",
+            TextSecondary         = "#64748B",
+            TextDisabled          = "#CBD5E1",
+            Divider               = "#E2E8F0",
+            LinesDefault          = "#E2E8F0",
+            Success               = "#10B981",
+            SuccessContrastText   = "#FFFFFF",
+            Error                 = "#F43F5E",
+            ErrorContrastText     = "#FFFFFF",
+            Warning               = "#F59E0B",
+            WarningContrastText   = "#1F2937",
+            Info                  = "#6366F1",
+            InfoContrastText      = "#FFFFFF",
+        },
+        LayoutProperties = new LayoutProperties
+        {
+            DefaultBorderRadius = "10px",
+            DrawerWidthLeft     = "260px",
+            AppbarHeight        = "64px",
+        }
+    };
+}

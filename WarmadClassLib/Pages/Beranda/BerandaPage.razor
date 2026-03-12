@@ -1,0 +1,92 @@
+@namespace WarmadClassLib.Pages
+<!-- Beranda — ringkasan harian -->
+
+<div class="page-header">
+    <div class="page-header-title">Selamat datang kembali</div>
+    <div class="page-header-sub">Ringkasan aktivitas hari ini</div>
+</div>
+
+<MudGrid Spacing="3">
+
+    <MudItem xs="12" sm="4">
+        <MudPaper Class="stat-card stat-card-income" Elevation="0">
+            <div class="stat-card-body">
+                <MudIcon Icon="@Icons.Material.Rounded.TrendingUp" Class="stat-icon" />
+                <div class="stat-label">Pemasukan</div>
+                <div class="stat-value">Rp 0</div>
+                <div class="stat-sub">0 transaksi hari ini</div>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudPaper Class="stat-card stat-card-expense" Elevation="0">
+            <div class="stat-card-body">
+                <MudIcon Icon="@Icons.Material.Rounded.TrendingDown" Class="stat-icon" />
+                <div class="stat-label">Pengeluaran</div>
+                <div class="stat-value">Rp 0</div>
+                <div class="stat-sub">0 catatan hari ini</div>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+    <MudItem xs="12" sm="4">
+        <MudPaper Class="stat-card stat-card-net" Elevation="0">
+            <div class="stat-card-body">
+                <MudIcon Icon="@Icons.Material.Rounded.AccountBalanceWallet" Class="stat-icon" />
+                <div class="stat-label">Saldo Bersih</div>
+                <div class="stat-value">Rp 0</div>
+                <div class="stat-sub">pemasukan − pengeluaran</div>
+            </div>
+        </MudPaper>
+    </MudItem>
+
+</MudGrid>
+
+<MudGrid Spacing="3" Class="mt-2">
+    <MudItem xs="12" sm="6" md="4">
+        <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Rounded.PointOfSale"
+                   Href="/kasir"
+                   FullWidth="true"
+                   Class="quick-btn">
+            Buka Kasir
+        </MudButton>
+    </MudItem>
+    <MudItem xs="12" sm="6" md="4">
+        <MudButton Variant="Variant.Outlined"
+                   Color="Color.Default"
+                   StartIcon="@Icons.Material.Rounded.Receipt"
+                   Href="/pengeluaran"
+                   FullWidth="true"
+                   Class="quick-btn">
+            Catat Pengeluaran
+        </MudButton>
+    </MudItem>
+</MudGrid>
+
+<MudGrid Class="mt-2">
+    <MudItem xs="12" md="8">
+        <MudPaper Class="pa-5" Elevation="1">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px">
+                <MudIcon Icon="@Icons.Material.Rounded.Inventory2" Color="Color.Warning" />
+                <MudText Typo="Typo.subtitle1" Style="font-weight:700">Stok Menipis</MudText>
+            </div>
+            <MudText Color="Color.Secondary" Typo="Typo.body2">
+                Tidak ada produk yang perlu diperhatikan saat ini.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+    <MudItem xs="12" md="4">
+        <MudPaper Class="pa-5" Elevation="1" Style="height:100%">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px">
+                <MudIcon Icon="@Icons.Material.Rounded.BarChart" Color="Color.Primary" />
+                <MudText Typo="Typo.subtitle1" Style="font-weight:700">Produk Terlaris</MudText>
+            </div>
+            <MudText Color="Color.Secondary" Typo="Typo.body2">
+                Belum ada data transaksi.
+            </MudText>
+        </MudPaper>
+    </MudItem>
+</MudGrid>
