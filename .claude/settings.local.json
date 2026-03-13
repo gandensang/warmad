@@ -3,7 +3,8 @@
     "allow": [
       "Bash(cd:*)",
       "Bash(dotnet build:*)",
-      "Bash(echo empty:*)"
+      "Bash(echo empty:*)",
+      "Bash(cd \"C:\\\\Users\\\\gandensang\\\\RiderProjects\\\\2026 Project\\\\warmad\" && dotnet sln add SqliteModel/SqliteModel.csproj)"
     ]
   }
 }

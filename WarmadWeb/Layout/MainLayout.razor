@@ -1,67 +1,122 @@
 @inherits LayoutComponentBase
+@implements IDisposable
+@inject NavigationManager Nav
+@inject IJSRuntime JS
 
 <MudThemeProvider Theme="_theme" />
 <MudPopoverProvider />
 <MudDialogProvider FullWidth="true" MaxWidth="MaxWidth.Small" />
 <MudSnackbarProvider />
 
-<MudLayout>
+<div class="mobile-shell">
 
-    <MudAppBar Elevation="1" Color="Color.Primary" Dense="false">
-        <MudIconButton Icon="@Icons.Material.Rounded.Menu"
-                       Color="Color.Inherit"
-                       Edge="Edge.Start"
-                       OnClick="ToggleDrawer"
-                       Style="color:#94A3B8" />
-        <MudSpacer />
-        <MudText Typo="Typo.body2" Style="color:#475569; font-size:0.8125rem; font-weight:500; margin-right:8px">
-            @_today
-        </MudText>
-        <MudIconButton Icon="@Icons.Material.Outlined.NotificationsNone"
-                       Color="Color.Inherit"
-                       Style="color:#64748B" />
-    </MudAppBar>
-
-    <MudDrawer @bind-Open="_drawerOpen"
-               Elevation="0"
-               Variant="@DrawerVariant.Responsive"
-               ClipMode="DrawerClipMode.Always">
-
-        <div class="brand-header">
-            <div class="brand-logo">W</div>
-            <div>
-                <div class="brand-name">Warmad</div>
-                <div class="brand-sub">POS System</div>
+    <header class="mobile-topbar">
+        @if (_isSubPage)
+        {
+            <button class="topbar-back" @onclick="GoBack">
+                <MudIcon Icon="@Icons.Material.Rounded.ArrowBackIos" Style="font-size:1.125rem; color:#CBD5E1" />
+            </button>
+            <span class="topbar-title">@_pageTitle</span>
+            <div class="topbar-spacer"></div>
+        }
+        else
+        {
+            <div class="topbar-brand">
+                <div class="topbar-logo">W</div>
+                <div>
+                    <div class="topbar-brand-name">Warmad</div>
+                    <div class="topbar-brand-sub">POS System</div>
+                </div>
             </div>
-        </div>
+            <div class="topbar-date">@_today</div>
+        }
+    </header>
 
-        <MudDivider Style="margin: 0 16px 8px;" />
+    <main class="mobile-content @(_isSubPage ? "" : "has-bottomnav")">
+        @Body
+    </main>
 
-        <NavMenu />
+    @if (!_isSubPage)
+    {
+        <nav class="bottom-nav">
+            <a href="/" class="bnav-item @(_path == "/" ? "active" : "")">
+                <MudIcon Icon="@Icons.Material.Rounded.Home" Class="bnav-icon" />
+                <span class="bnav-label">Beranda</span>
+            </a>
+            <a href="/kasir" class="bnav-item @(_path == "/kasir" ? "active" : "")">
+                <MudIcon Icon="@Icons.Material.Rounded.PointOfSale" Class="bnav-icon" />
+                <span class="bnav-label">Kasir</span>
+            </a>
+            <a href="/produk" class="bnav-item @(_path == "/produk" ? "active" : "")">
+                <MudIcon Icon="@Icons.Material.Rounded.Inventory2" Class="bnav-icon" />
+                <span class="bnav-label">Produk</span>
+            </a>
+            <a href="/laporan" class="bnav-item @(_path == "/laporan" ? "active" : "")">
+                <MudIcon Icon="@Icons.Material.Rounded.BarChart" Class="bnav-icon" />
+                <span class="bnav-label">Laporan</span>
+            </a>
+            <a href="/pengaturan" class="bnav-item @(_path == "/pengaturan" ? "active" : "")">
+                <MudIcon Icon="@Icons.Material.Rounded.Settings" Class="bnav-icon" />
+                <span class="bnav-label">Setelan</span>
+            </a>
+        </nav>
+    }
 
-    </MudDrawer>
-
-    <MudMainContent Class="warmad-main">
-        <MudContainer MaxWidth="MaxWidth.Large" Class="py-6 px-4">
-            @Body
-        </MudContainer>
-    </MudMainContent>
-
-</MudLayout>
+</div>
 
 @code {
-    private bool _drawerOpen = true;
-    private string _today = "";
+    private static readonly HashSet<string> MainPages = new(StringComparer.OrdinalIgnoreCase)
+        { "/", "/kasir", "/produk", "/laporan", "/pengaturan" };
+
+    private static readonly Dictionary<string, string> PageTitles = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["/"]            = "Beranda",
+        ["/kasir"]       = "Kasir",
+        ["/produk"]      = "Produk",
+        ["/laporan"]     = "Laporan",
+        ["/pengaturan"]  = "Pengaturan",
+        ["/pengeluaran"] = "Pengeluaran",
+        ["/stok"]        = "Stok",
+    };
+
+    private string _path      = "/";
+    private bool   _isSubPage = false;
+    private string _pageTitle = "";
+    private string _today     = "";
 
     protected override void OnInitialized()
     {
-        var hari = new[] { "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" };
+        var hari  = new[] { "Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu" };
         var bulan = new[] { "", "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Agu", "Sep", "Okt", "Nov", "Des" };
-        var now = DateTime.Now;
+        var now   = DateTime.Now;
         _today = $"{hari[(int)now.DayOfWeek]}, {now.Day} {bulan[now.Month]} {now.Year}";
+
+        Nav.LocationChanged += OnLocationChanged;
+        UpdatePageState(Nav.Uri);
     }
 
-    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        UpdatePageState(e.Location);
+        InvokeAsync(StateHasChanged);
+    }
+
+    private void UpdatePageState(string uri)
+    {
+        var baseUri = Nav.BaseUri.TrimEnd('/');
+        _path = uri.StartsWith(baseUri, StringComparison.OrdinalIgnoreCase)
+            ? uri[baseUri.Length..]
+            : "/";
+        if (string.IsNullOrEmpty(_path)) _path = "/";
+
+        _isSubPage = !MainPages.Contains(_path);
+        PageTitles.TryGetValue(_path, out _pageTitle!);
+        _pageTitle ??= _path.TrimStart('/');
+    }
+
+    private async Task GoBack() => await JS.InvokeVoidAsync("history.back");
+
+    public void Dispose() => Nav.LocationChanged -= OnLocationChanged;
 
     private readonly MudTheme _theme = new()
     {
@@ -95,8 +150,7 @@
         LayoutProperties = new LayoutProperties
         {
             DefaultBorderRadius = "10px",
-            DrawerWidthLeft     = "260px",
-            AppbarHeight        = "64px",
+            AppbarHeight        = "58px",
         }
     };
 }

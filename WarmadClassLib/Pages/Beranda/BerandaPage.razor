@@ -6,9 +6,10 @@
     <div class="page-header-sub">Ringkasan aktivitas hari ini</div>
 </div>
 
-<MudGrid Spacing="3">
+<!-- Stat Cards -->
+<MudGrid Spacing="2" Class="mb-4">
 
-    <MudItem xs="12" sm="4">
+    <MudItem xs="12">
         <MudPaper Class="stat-card stat-card-income" Elevation="0">
             <div class="stat-card-body">
                 <MudIcon Icon="@Icons.Material.Rounded.TrendingUp" Class="stat-icon" />
@@ -19,70 +20,93 @@
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="4">
+    <MudItem xs="6">
         <MudPaper Class="stat-card stat-card-expense" Elevation="0">
             <div class="stat-card-body">
                 <MudIcon Icon="@Icons.Material.Rounded.TrendingDown" Class="stat-icon" />
                 <div class="stat-label">Pengeluaran</div>
                 <div class="stat-value">Rp 0</div>
-                <div class="stat-sub">0 catatan hari ini</div>
+                <div class="stat-sub">0 catatan</div>
             </div>
         </MudPaper>
     </MudItem>
 
-    <MudItem xs="12" sm="4">
+    <MudItem xs="6">
         <MudPaper Class="stat-card stat-card-net" Elevation="0">
             <div class="stat-card-body">
                 <MudIcon Icon="@Icons.Material.Rounded.AccountBalanceWallet" Class="stat-icon" />
                 <div class="stat-label">Saldo Bersih</div>
                 <div class="stat-value">Rp 0</div>
-                <div class="stat-sub">pemasukan − pengeluaran</div>
+                <div class="stat-sub">pemasukan − keluar</div>
             </div>
         </MudPaper>
     </MudItem>
 
 </MudGrid>
 
-<MudGrid Spacing="3" Class="mt-2">
-    <MudItem xs="12" sm="6" md="4">
-        <MudButton Variant="Variant.Filled"
-                   Color="Color.Primary"
-                   StartIcon="@Icons.Material.Rounded.PointOfSale"
-                   Href="/kasir"
-                   FullWidth="true"
-                   Class="quick-btn">
-            Buka Kasir
-        </MudButton>
-    </MudItem>
-    <MudItem xs="12" sm="6" md="4">
-        <MudButton Variant="Variant.Outlined"
-                   Color="Color.Default"
-                   StartIcon="@Icons.Material.Rounded.Receipt"
-                   Href="/pengeluaran"
-                   FullWidth="true"
-                   Class="quick-btn">
-            Catat Pengeluaran
-        </MudButton>
-    </MudItem>
-</MudGrid>
+<!-- Navigation Grid -->
+<MudText Typo="Typo.caption"
+         Style="font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:#94A3B8; display:block; margin-bottom:10px">
+    Menu
+</MudText>
 
-<MudGrid Class="mt-2">
-    <MudItem xs="12" md="8">
-        <MudPaper Class="pa-5" Elevation="1">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px">
-                <MudIcon Icon="@Icons.Material.Rounded.Inventory2" Color="Color.Warning" />
-                <MudText Typo="Typo.subtitle1" Style="font-weight:700">Stok Menipis</MudText>
+<div class="nav-grid mb-4">
+    <a href="/kasir" class="nav-tile nav-tile-emerald">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.PointOfSale" Style="color:white; font-size:1.375rem" />
+        </div>
+        Kasir
+    </a>
+    <a href="/produk" class="nav-tile nav-tile-blue">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.Inventory2" Style="color:white; font-size:1.375rem" />
+        </div>
+        Produk
+    </a>
+    <a href="/pengeluaran" class="nav-tile nav-tile-rose">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.Receipt" Style="color:white; font-size:1.375rem" />
+        </div>
+        Pengeluaran
+    </a>
+    <a href="/stok" class="nav-tile nav-tile-orange">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.Warehouse" Style="color:white; font-size:1.375rem" />
+        </div>
+        Stok
+    </a>
+    <a href="/laporan" class="nav-tile nav-tile-indigo">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.BarChart" Style="color:white; font-size:1.375rem" />
+        </div>
+        Laporan
+    </a>
+    <a href="/pengaturan" class="nav-tile nav-tile-slate">
+        <div class="nav-tile-icon">
+            <MudIcon Icon="@Icons.Material.Rounded.Settings" Style="color:white; font-size:1.375rem" />
+        </div>
+        Setelan
+    </a>
+</div>
+
+<!-- Info Cards -->
+<MudGrid Spacing="2">
+    <MudItem xs="12">
+        <MudPaper Class="pa-4" Elevation="1">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
+                <MudIcon Icon="@Icons.Material.Rounded.Inventory2" Color="Color.Warning" Style="font-size:1.25rem" />
+                <MudText Typo="Typo.subtitle2" Style="font-weight:700">Stok Menipis</MudText>
             </div>
             <MudText Color="Color.Secondary" Typo="Typo.body2">
                 Tidak ada produk yang perlu diperhatikan saat ini.
             </MudText>
         </MudPaper>
     </MudItem>
-    <MudItem xs="12" md="4">
-        <MudPaper Class="pa-5" Elevation="1" Style="height:100%">
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:16px">
-                <MudIcon Icon="@Icons.Material.Rounded.BarChart" Color="Color.Primary" />
-                <MudText Typo="Typo.subtitle1" Style="font-weight:700">Produk Terlaris</MudText>
+    <MudItem xs="12">
+        <MudPaper Class="pa-4" Elevation="1">
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px">
+                <MudIcon Icon="@Icons.Material.Rounded.BarChart" Color="Color.Primary" Style="font-size:1.25rem" />
+                <MudText Typo="Typo.subtitle2" Style="font-weight:700">Produk Terlaris</MudText>
             </div>
             <MudText Color="Color.Secondary" Typo="Typo.body2">
                 Belum ada data transaksi.
